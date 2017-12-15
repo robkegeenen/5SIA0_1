@@ -1,0 +1,5 @@
+*
+!gem5/*
+!eeg/*
+!m5out/*
+!m5threads/*
