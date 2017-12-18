@@ -1,12 +1,21 @@
 #!/bin/bash
+compfiles=("../results/compare"{1,2})
+
+
 cd "$(dirname "$(readlink -f "${0}")")"
-compfile=("../results/compare{1,2}")
 tempfile="$(mktemp)"
 ./eeg >"${tempfile}"
-if diff "${tempfile}" "${compfile}"
+eqto=""
+for compfile in "${compfiles[@]}"
+do
+  if diff "${tempfile}" "${compfile}" >/dev/null
+  then
+    eqto="IDENTICAL TO: ${compfile}"
+  fi
+done
+if [ -z "${eqto}" ]
 then
-  echo "IDENTICAL"
-else
-  echo "DIFFERENT"
+  eqto="DIFFERENT"
 fi
+echo "${eqto}"
 rm -f "${tempfile}"
