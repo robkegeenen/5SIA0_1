@@ -2,9 +2,9 @@ gem5 Simulator System.  http://gem5.org
 gem5 is copyrighted software; use the --copyright option for details.
 
 gem5 compiled Dec 20 2016 00:37:49
-gem5 started Dec 20 2017 09:44:15
-gem5 executing on eca-VirtualBox, pid 3642
-command line: ../gem5/build/ARM/gem5.opt ../gem5/configs/example/arm-config.py.41a -n 1 -c eeg.arm.41a
+gem5 started Dec 20 2017 10:45:58
+gem5 executing on eca-VirtualBox, pid 4221
+command line: ../gem5/build/ARM/gem5.opt ../gem5/configs/example/arm-config.py.52a -n 1 -c eeg.arm.52a
 
 Global frequency set at 1000000000000 ticks per second
 **** REAL SIMULATION ****
@@ -214,4 +214,4 @@ Feature 10: 138.442657
 Feature 11: 479.108002
 Feature 12: 1139.541504
 Feature 13: 1894.449097
-Exiting @ tick 593612513000 because target called exit()
+Exiting @ tick 441644033000 because target called exit()

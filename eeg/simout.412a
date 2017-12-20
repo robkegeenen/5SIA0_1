@@ -2,8 +2,8 @@ gem5 Simulator System.  http://gem5.org
 gem5 is copyrighted software; use the --copyright option for details.
 
 gem5 compiled Dec 20 2016 00:37:49
-gem5 started Dec 18 2017 17:33:52
-gem5 executing on eca-VirtualBox, pid 3973
+gem5 started Dec 20 2017 09:45:05
+gem5 executing on eca-VirtualBox, pid 3750
 command line: ../gem5/build/ARM/gem5.opt ../gem5/configs/example/arm-config.py.412a -n 1 -c eeg.arm.412a
 
 Script ../gem5/configs/example/arm-config.py.412a not found
