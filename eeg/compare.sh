@@ -1,7 +1,7 @@
 #!/bin/bash
-compfiles=("../results/compare"{1,2})
+compfiles=("../results/compare"{0,1,2})
 conffile="../gem5/configs/example/arm-config.py"
-
+gem5bin="../gem5/build/ARM/gem5.opt"
 
 suffix="${1}"
 numthreads="${2}"
@@ -36,6 +36,6 @@ else
   rm -f "${tempfile}"
   if [ "${simul}" == "simul" ]
   then
-    gem5.opt "${conffile}.${suffix}" -n "${numthreads}" -c "eeg.arm.${suffix}" | tee "simout.${suffix}"
+    "${gem5bin}" "${conffile}.${suffix}" -n "${numthreads}" -c "eeg.arm.${suffix}" | tee "simout.${suffix}"
   fi
 fi
