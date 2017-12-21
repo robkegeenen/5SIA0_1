@@ -18,8 +18,8 @@
 #include "hurst.h"
 #include "fft.h"
 
-#define CHANNELS 23
-#define DATAPOINTS 256
+#define CHANNELS 4
+#define DATAPOINTS 64
 #define FEATURE_LENGTH 14
 #define FS 100
 

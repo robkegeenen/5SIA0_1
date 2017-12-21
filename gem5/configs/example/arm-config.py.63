@@ -150,7 +150,7 @@ np = options.num_cpus
 ### Assemble the system
 
 system = System()
-system.cpu = [DerivO3CPU(),DerivO3CPU(),DerivO3CPU()]
+system.cpu = [DerivO3CPU(),DerivO3CPU(),DerivO3CPU(),DerivO3CPU()]
 system.mem_mode = 'timing'
 system.physmem = SimpleMemory(range=AddrRange("512MB"))
 system.membus = SystemXBar()
@@ -242,7 +242,7 @@ cpu4.fuPool = FUPool(FUList=[IntALUA15(), IntMult(), IntDiv(), RdWrPort()])
 system.cpu[0].workload = multiprocesses[0]
 system.cpu[1].workload = multiprocesses[0]
 system.cpu[2].workload = multiprocesses[0]
-system.cpu[4].workload = multiprocesses[0]
+system.cpu[3].workload = multiprocesses[0]
 
 ### Connect up system memory
 

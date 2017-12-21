@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
     }
 
     // Averaging channels
-    #pragma omp parallel for
+    #pragma omp parallel for private(i)
     for (j = 0; j < FEATURE_LENGTH; j++) {
 	for (i = 0; i < CHANNELS; i++) {
             favg[j] += features[i][j] / FEATURE_LENGTH;
@@ -39,7 +39,6 @@ int main(int argc, char *argv[]) {
     printf("\n");
 	for (i=0; i<FEATURE_LENGTH; i++)
         printf("Feature %d: %.6f\n", i, favg[i]);
-
     return 0;
 }
 

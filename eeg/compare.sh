@@ -1,6 +1,6 @@
 #!/bin/bash
-compfile="../results/compare"
-tickfile="../results/ticks"
+compfile="../results/compare.less"
+tickfile="../results/ticks.less"
 conffile="../gem5/configs/example/arm-config.py"
 gem5bin="../gem5/build/ARM/gem5.opt"
 
@@ -38,10 +38,19 @@ else
   if [ "${simul}" == "simul" ]
   then
     "${gem5bin}" "${conffile}.${suffix}" -n "${numthreads}" -c "eeg.arm.${suffix}" | tee -a "${simout}" | grep --line-buffered -P '^Channel done$' | nl
-    echo -ne "\n\n" >"${simout}"
-    newticks="$(cat "${simout}" | sed '/^Exiting/! d; s/^[^[:digit:]]*\([[:digit:]]\+\)[^[:digit:]]*$/\1/g')"
+    echo -ne "\n\n" >>"${simout}"
     compticks="$(cat "${tickfile}")"
-    echo -ne "tick numbers:\n  +-original: ${compticks}\n  +------new: ${newticks}\n  +----saved: $((compticks - newticks))\n" >>"${simout}"
+    newticks="$(cat "${simout}" | sed '/^Exiting/! d; s/^[^[:digit:]]*\([[:digit:]]\+\)[^[:digit:]]*$/\1/g')"
+    saveticks="$((compticks - ${newticks:-"${compticks}"}))"
+    len="$((${#compticks}>${#newticks}?${#compticks}:${#newticks}))"
+    len="$((len>${#saveticks}?len:${#saveticks}))"
+    echo    "tick numbers:" >>"${simout}"
+    echo -n "  +-original: " >>"${simout}"
+    printf "%${len}s\n" "${compticks}" >>"${simout}"
+    echo -n "  +------new: " >>"${simout}"
+    printf "%${len}s\n" "${newticks:-ERROR!}" >>"${simout}"
+    echo -n "  +----saved: " >>"${simout}"
+    printf "%${len}s\n" "${saveticks}" >>"${simout}"
     cat "${simout}" | doDiff "${tempfile}" "${compfile}" "simulation" | tee -a "${simout}"
   fi
   ./"eeg.${suffix}" | doDiff "${tempfile}" "${compfile}" "    native" | tee -a "${simout}"
