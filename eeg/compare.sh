@@ -17,19 +17,21 @@ else
   mv "eeg" "eeg.${suffix}"
   NUM_THREADS="${numthreads}" make
   mv "eeg.arm" "eeg.arm.${suffix}"
+  simout="simout.${suffix}"
+  truncate -s0 "${simout}"
 
   if [ "${simul}" == "simul" ]
   then
-    "${gem5bin}" "${conffile}.${suffix}" -n "${numthreads}" -c "eeg.arm.${suffix}" | tee "simout.${suffix}"
+    "${gem5bin}" "${conffile}.${suffix}" -n "${numthreads}" -c "eeg.arm.${suffix}" | tee -a "${simout}"
   fi
 
   tempfile="$(mktemp)"
   ./"eeg.${suffix}" >"${tempfile}"
   if diff "${tempfile}" "${compfile}" >/dev/null
   then
-    echo "IDENTICAL" | tee -a "simout.${suffix}"
+    echo "IDENTICAL" | tee -a "${simout}"
   else
-    echo "DIFFERENT" | tee -a "simout.${suffix}"
+    echo "DIFFERENT" | tee -a "${simout}"
   fi
   rm -f "${tempfile}"
 
