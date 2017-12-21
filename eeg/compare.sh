@@ -31,7 +31,6 @@ else
   else
     echo "DIFFERENT" | tee -a "simout.${suffix}"
   fi
-  done
   rm -f "${tempfile}"
 
 fi
