@@ -37,7 +37,7 @@ else
 
   if [ "${simul}" == "simul" ]
   then
-    "${gem5bin}" "${conffile}.${suffix}" -n "${numthreads}" -c "eeg.arm.${suffix}" | tee -a "${simout}"
+    "${gem5bin}" "${conffile}.${suffix}" -n "${numthreads}" -c "eeg.arm.${suffix}" | tee -a "${simout}" | grep --line-buffered -P '^Channel done$' | nl
     echo -ne "\n\n" >"${simout}"
     newticks="$(cat "${simout}" | sed '/^Exiting/! d; s/^[^[:digit:]]*\([[:digit:]]\+\)[^[:digit:]]*$/\1/g')"
     compticks="$(cat "${tickfile}")"
