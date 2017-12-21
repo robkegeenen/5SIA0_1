@@ -26,7 +26,7 @@ else
   fi
 
   tempfile="$(mktemp)"
-  ./"eeg.${suffix}" >"${tempfile}"
+  ./"eeg.${suffix}" | sed '/^Feature/! d' >"${tempfile}"
   if diff "${tempfile}" "${compfile}" >/dev/null
   then
     echo "IDENTICAL" | tee -a "${simout}"
