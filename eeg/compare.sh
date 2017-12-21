@@ -1,5 +1,5 @@
 #!/bin/bash
-compfiles=("../results/compare"{0,1,2})
+compfile="../results/compare"
 conffile="../gem5/configs/example/arm-config.py"
 gem5bin="../gem5/build/ARM/gem5.opt"
 
@@ -18,24 +18,20 @@ else
   NUM_THREADS="${numthreads}" make
   mv "eeg.arm" "eeg.arm.${suffix}"
 
-  tempfile="$(mktemp)"
-  ./"eeg.${suffix}" >"${tempfile}"
-  eqto=""
-  for compfile in "${compfiles[@]}"
-  do
-    if diff "${tempfile}" "${compfile}" >/dev/null
-    then
-      eqto="IDENTICAL TO: ${compfile}"
-    fi
-  done
-  if [ -z "${eqto}" ]
-  then
-    eqto="DIFFERENT"
-  fi
-  echo "${eqto}"
-  rm -f "${tempfile}"
   if [ "${simul}" == "simul" ]
   then
     "${gem5bin}" "${conffile}.${suffix}" -n "${numthreads}" -c "eeg.arm.${suffix}" | tee "simout.${suffix}"
   fi
+
+  tempfile="$(mktemp)"
+  ./"eeg.${suffix}" >"${tempfile}"
+  if diff "${tempfile}" "${compfile}" >/dev/null
+  then
+    echo "IDENTICAL" | tee -a "simout.${suffix}"
+  else
+    echo "DIFFERENT" | tee -a "simout.${suffix}"
+  fi
+  done
+  rm -f "${tempfile}"
+
 fi
