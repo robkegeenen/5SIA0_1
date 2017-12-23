@@ -103,7 +103,7 @@ multiprocesses.append(process)
 
 # By default, set workload to path of user-specified binary
 workloads = options.cmd
-numThreads = 4
+numThreads = 23
 
 if options.cpu_type == "detailed" or options.cpu_type == "inorder":
     #check for Simultaneous Multithreaded workload
