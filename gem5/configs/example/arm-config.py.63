@@ -103,7 +103,7 @@ multiprocesses.append(process)
 
 # By default, set workload to path of user-specified binary
 workloads = options.cmd
-numThreads = 23
+#numThreads = 3
 
 if options.cpu_type == "detailed" or options.cpu_type == "inorder":
     #check for Simultaneous Multithreaded workload
@@ -172,13 +172,9 @@ system.cpu_clk_domain = SrcClockDomain(clock = options.cpu_clock,
 
 #Functional Unit definitions taken from FuncUnitConfig.py, modified to match A9
 
-class IntALUA9(FUDesc):
+class IntALU(FUDesc):
     opList = [ OpDesc(opClass='IntAlu') ]
     count = 1
-
-class IntALUA15(FUDesc):
-    opList = [ OpDesc(opClass='IntAlu') ]
-    count = 2
 
 class IntMultDiv(FUDesc):
     opList = [ OpDesc(opClass='IntMult', opLat=3),
@@ -197,47 +193,35 @@ class RdWrPort(FUDesc):
     opList = [ OpDesc(opClass='MemRead'), OpDesc(opClass='MemWrite') ]
     count = 1
 
-### Reconfigure the CPU to match the Cortex A9 specs
-A9_decodeWidth = 2
-A9_fetchWidth = 2
-A9_issueWidth = 2
-A9_dispatchWidth = 2
-
-A15_decodeWidth = 3
-A15_fetchWidth = 3
-A15_issueWidth = 3
-A15_dispatchWidth = 3
-
-cpu = system.cpu[0]
-
-cpu.decodeWidth = A9_decodeWidth 
-cpu.fetchWidth = A9_fetchWidth
-cpu.issueWidth = A9_issueWidth
-cpu.dispatchWidth = A9_dispatchWidth
-
-# Attach the Functional units
-cpu.fuPool = FUPool(FUList=[IntALUA9(), IntMultDiv(), RdWrPort()])
+# A9s
+cpu1 = system.cpu[0]
+cpu1.decodeWidth = 2 
+cpu1.fetchWidth = 2
+cpu1.issueWidth = 2
+cpu1.dispatchWidth = 2
+cpu1.fuPool = FUPool(FUList=[IntALU(), IntMultDiv(), RdWrPort()])
 
 cpu2 = system.cpu[1]
-cpu2.decodeWidth = A9_decodeWidth     
-cpu2.fetchWidth = A9_fetchWidth
-cpu2.issueWidth = A9_issueWidth
-cpu2.dispatchWidth = A9_dispatchWidth
-cpu2.fuPool = FUPool(FUList=[IntALUA9(), IntMultDiv(), RdWrPort()])
+cpu2.decodeWidth = 2     
+cpu2.fetchWidth = 2
+cpu2.issueWidth = 2
+cpu2.dispatchWidth = 2
+cpu2.fuPool = FUPool(FUList=[IntALU(), IntMultDiv(), RdWrPort()])
 
+# A15s
 cpu3 = system.cpu[2]
-cpu3.decodeWidth = A15_decodeWidth    
-cpu3.fetchWidth = A15_fetchWidth
-cpu3.issueWidth = A15_issueWidth
-cpu3.dispatchWidth = A15_dispatchWidth
-cpu3.fuPool = FUPool(FUList=[IntALUA15(), IntMult(), IntDiv(), RdWrPort()])
+cpu3.decodeWidth = 3    
+cpu3.fetchWidth = 3
+cpu3.issueWidth = 3
+cpu3.dispatchWidth = 3
+cpu3.fuPool = FUPool(FUList=[IntALU(), IntALU(), IntMult(), IntDiv(), RdWrPort()])
 
 cpu4 = system.cpu[3]
-cpu4.decodeWidth = A15_decodeWidth    
-cpu4.fetchWidth = A15_fetchWidth
-cpu4.issueWidth = A15_issueWidth
-cpu4.dispatchWidth = A15_dispatchWidth
-cpu4.fuPool = FUPool(FUList=[IntALUA15(), IntMult(), IntDiv(), RdWrPort()])
+cpu4.decodeWidth = 3
+cpu4.fetchWidth = 3
+cpu4.issueWidth = 3
+cpu4.dispatchWidth = 3
+cpu4.fuPool = FUPool(FUList=[IntALU(), IntALU(), IntMult(), IntDiv(), RdWrPort()])
 
 system.cpu[0].workload = multiprocesses[0]
 system.cpu[1].workload = multiprocesses[0]
